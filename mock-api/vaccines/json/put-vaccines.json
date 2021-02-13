@@ -1,0 +1,10 @@
+{
+  "httpRequest": {
+    "method": "PUT",
+    "path": "/vaccines/[0-9]+"
+  },
+  "httpResponse": {
+    "body": {}
+  }
+}
+

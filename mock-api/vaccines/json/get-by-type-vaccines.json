@@ -1,0 +1,24 @@
+{
+  "httpRequest": {
+    "method": "GET",
+    "path": "/vaccines",
+    "queryStringParameters" : {
+      "vaccineType" : [ "covid-19" ]
+    }
+  },
+  "httpResponse": {
+    "body": [
+      {
+        "id": "1",
+        "type": "covid-19",
+        "personId": ""
+      },
+      {
+        "id": "2",
+        "type": "covid-19",
+        "personId": ""
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,25 @@
+{
+  "httpRequest": {
+    "method": "GET",
+    "path": "/persons"
+  },
+  "httpResponse": {
+    "body": [
+      {
+        "id": "1",
+        "name": "Rafael",
+        "lastName": "Cid",
+        "age": "34",
+        "job": "Engineer"
+      },
+      {
+        "id": "2",
+        "name": "Pepito",
+        "lastName": "Grillo",
+        "age": "74",
+        "job": "null"
+      }
+    ]
+  }
+}
+

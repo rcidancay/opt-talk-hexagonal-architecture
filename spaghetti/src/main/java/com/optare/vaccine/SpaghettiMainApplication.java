@@ -1,4 +1,4 @@
-package com.optare.interview;
+package com.optare.vaccine;
 
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @SpringBootApplication
 @RestController
-public class MainApplication {
+public class SpaghettiMainApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MainApplication.class, args);
+        SpringApplication.run(SpaghettiMainApplication.class, args);
     }
 
     @GetMapping("/vaccines")

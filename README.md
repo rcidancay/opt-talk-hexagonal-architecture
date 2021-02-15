@@ -1,6 +1,6 @@
-# VACCINES BACKEND
+# 💉 VACCINES BACKEND
 
-## Features
+## 🟢 Features
 * Retrieve all persons
 * Retrieve all vaccines
 * Vaccinate the following people according to the next priority :

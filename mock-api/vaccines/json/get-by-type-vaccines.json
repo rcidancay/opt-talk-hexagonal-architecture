@@ -3,7 +3,8 @@
     "method": "GET",
     "path": "/vaccines",
     "queryStringParameters" : {
-      "vaccineType" : [ "covid-19" ]
+      "vaccineType" : [ "covid-19" ],
+      "notVaccinated" : [ "true" ]
     }
   },
   "httpResponse": {
@@ -15,6 +16,11 @@
       },
       {
         "id": "2",
+        "type": "covid-19",
+        "personId": ""
+      },
+      {
+        "id": "3",
         "type": "covid-19",
         "personId": ""
       }

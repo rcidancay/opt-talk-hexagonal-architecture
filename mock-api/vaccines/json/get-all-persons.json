@@ -14,10 +14,24 @@
       },
       {
         "id": "2",
-        "name": "Pepito",
-        "lastName": "Grillo",
-        "age": "74",
-        "job": "null"
+        "name": " Fran",
+        "lastName": "López",
+        "age": "37",
+        "job": "Mayor"
+      },
+      {
+        "id": "3",
+        "name": " José",
+        "lastName": "Pérez",
+        "age": "66",
+        "job": ""
+      },
+      {
+        "id": "4",
+        "name": "Manuel",
+        "lastName": "Núñez",
+        "age": "27",
+        "job": "HealthPersonnel"
       }
     ]
   }

@@ -10,14 +10,14 @@
         "name": "Rafael",
         "lastName": "Cid",
         "age": "34",
-        "job": "Engineer"
+        "job": "ENGINEER"
       },
       {
         "id": "2",
         "name": " Fran",
         "lastName": "López",
         "age": "37",
-        "job": "Mayor"
+        "job": "MAYOR"
       },
       {
         "id": "3",
@@ -31,7 +31,7 @@
         "name": "Manuel",
         "lastName": "Núñez",
         "age": "27",
-        "job": "HealthPersonnel"
+        "job": "HEALTH_PERSONNEL"
       }
     ]
   }

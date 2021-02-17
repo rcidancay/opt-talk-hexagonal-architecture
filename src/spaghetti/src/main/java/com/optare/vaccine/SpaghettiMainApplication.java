@@ -40,9 +40,7 @@ public class SpaghettiMainApplication {
     }
 
     @GetMapping("/persons")
-    public List<PersonResponse> listOfPersonsVaccined(@RequestParam(required = false) String vaccineType) {
-
-        if (vaccineType == null) {
+    public List<PersonResponse> listOfPersonsVaccined() {
             List<PersonResponse> result = new ArrayList<>();
 
             String url = "http://localhost:1080/persons";
@@ -57,50 +55,11 @@ public class SpaghettiMainApplication {
                 String var6 = JsonPath.read(x, "$.job");
                 result.add(new PersonResponse(var1, var2, Integer.parseInt(var3), var6));
             }
-
             return result;
-        } else {
-
-            RestTemplate restTemplate = new RestTemplate();
-
-            List<PersonResponse> persons = new ArrayList<>();
-            String url2 = "http://localhost:1080/persons";
-            ResponseEntity<String> responseUsers = restTemplate.getForEntity(url2, String.class);
-            JSONArray var4 = JsonPath.read(responseUsers.getBody(), "$");
-            for (Object x : var4) {
-                String var1 = JsonPath.read(x, "$.id");
-                String var2 = JsonPath.read(x, "$.name");
-                String var3 = JsonPath.read(x, "$.age");
-                String var6 = JsonPath.read(x, "$.job");
-                persons.add(new PersonResponse(var1, var2, Integer.parseInt(var3), var6));
-            }
-
-            List<PersonResponse> personsVaccinated = new ArrayList<>();
-            String url = "http://localhost:1080/vaccines?vaccineType=" + vaccineType;
-            ResponseEntity<String> responseVaccines = restTemplate.getForEntity(url, String.class);
-            JSONArray var0 = JsonPath.read(responseVaccines.getBody(), "$");
-            for (Object x : var0) {
-                String var2 = JsonPath.read(x, "$.type");
-                String var3 = JsonPath.read(x, "$.personId");
-
-                if (vaccineType.equals(var2)) {
-                    for (PersonResponse person : persons) {
-                        if (var3.equals(person.getId())) {
-                            personsVaccinated.add(person);
-                        }
-                    }
-                }
-
-            }
-
-            return personsVaccinated;
-        }
     }
 
     @PutMapping("/vaccines")
     public void vaccinePerson(@RequestBody VaccineRequest vaccineRequest) {
-
-
         RestTemplate restTemplate = new RestTemplate();
 
         List<PersonResponse> persons = new ArrayList<>();
@@ -129,43 +88,49 @@ public class SpaghettiMainApplication {
 
                 // Business logic
                 if (StringUtils.isEmpty(var3)) {
-
+                    boolean vaccinatedFlag = false;
                     for (PersonResponse person : persons) {
-                        if (person.getAge() > 65 && !personsVaccinated.contains(person.getId())) {
-                            String url3 = "http://localhost:1080/vaccines/" + var1;
-                            PersonRequest personRequest = new PersonRequest(person.getId());
-                            restTemplate.put(url3, personRequest);
-                            personsVaccinated.add(person.id);
-                            totalVaccines--;
-                            person.setVaccinated(true);
-                            System.out.println("Rule (age > 65): " + person.getName() + " was vaccinated (" + var2 + ")");
-                        }
-                        if (notHasRetiredPersons(persons) && person.getJob().equals("Mayor") && !personsVaccinated.contains(person.getId())) {
-                            String url3 = "http://localhost:1080/vaccines/" + var1;
-                            PersonRequest personRequest = new PersonRequest(person.getId());
-                            restTemplate.put(url3, personRequest);
-                            personsVaccinated.add(person.id);
-                            totalVaccines--;
-                            person.setVaccinated(true);
-                            System.out.println("Rule (Mayor): " + person.getName() + " was vaccinated (" + var2 + ")");
-                        }
-                        if (notHasRetiredPersons(persons) && notHasMayors(persons) && person.getJob().equals("HealthPersonnel") && !personsVaccinated.contains(person.getId())) {
-                            String url3 = "http://localhost:1080/vaccines/" + var1;
-                            PersonRequest personRequest = new PersonRequest(person.getId());
-                            restTemplate.put(url3, personRequest);
-                            personsVaccinated.add(person.id);
-                            totalVaccines--;
-                            person.setVaccinated(true);
-                            System.out.println("Rule (Health Personnel): " + person.getName() + " was vaccinated (" + var2 + ")");
-                        }
-                        if (notHasRetiredPersons(persons) && !hasHealthPersonnel(persons) && notHasMayors(persons) && !personsVaccinated.contains(person.getId())) {
-                            String url3 = "http://localhost:1080/vaccines/" + var1;
-                            PersonRequest personRequest = new PersonRequest(person.getId());
-                            restTemplate.put(url3, personRequest);
-                            personsVaccinated.add(person.id);
-                            totalVaccines--;
-                            person.setVaccinated(true);
-                            System.out.println("Rule (The rest of population): " + person.getName() + " was vaccinated (" + var2 + ")");
+                        if(!vaccinatedFlag) {
+                            if (person.getAge() > 65 && !personsVaccinated.contains(person.getId())) {
+                                String url3 = "http://localhost:1080/vaccines/" + var1;
+                                PersonRequest personRequest = new PersonRequest(person.getId());
+                                restTemplate.put(url3, personRequest);
+                                personsVaccinated.add(person.id);
+                                totalVaccines--;
+                                person.setVaccinated(true);
+                                vaccinatedFlag = true;
+                                System.out.println("Rule (age > 65): " + person.getName() + " was vaccinated (" + var2 + ")");
+                            }
+                            if (notHasRetiredPersons(persons) && person.getJob().equals("MAYOR") && !personsVaccinated.contains(person.getId())) {
+                                String url3 = "http://localhost:1080/vaccines/" + var1;
+                                PersonRequest personRequest = new PersonRequest(person.getId());
+                                restTemplate.put(url3, personRequest);
+                                personsVaccinated.add(person.id);
+                                totalVaccines--;
+                                person.setVaccinated(true);
+                                vaccinatedFlag = true;
+                                System.out.println("Rule (Mayor): " + person.getName() + " was vaccinated (" + var2 + ")");
+                            }
+                            if (notHasRetiredPersons(persons) && notHasMayors(persons) && person.getJob().equals("HEALTH_PERSONNEL") && !personsVaccinated.contains(person.getId())) {
+                                String url3 = "http://localhost:1080/vaccines/" + var1;
+                                PersonRequest personRequest = new PersonRequest(person.getId());
+                                restTemplate.put(url3, personRequest);
+                                personsVaccinated.add(person.id);
+                                totalVaccines--;
+                                person.setVaccinated(true);
+                                vaccinatedFlag = true;
+                                System.out.println("Rule (Health Personnel): " + person.getName() + " was vaccinated (" + var2 + ")");
+                            }
+                            if (notHasRetiredPersons(persons) && !hasHealthPersonnel(persons) && notHasMayors(persons) && !personsVaccinated.contains(person.getId())) {
+                                String url3 = "http://localhost:1080/vaccines/" + var1;
+                                PersonRequest personRequest = new PersonRequest(person.getId());
+                                restTemplate.put(url3, personRequest);
+                                personsVaccinated.add(person.id);
+                                totalVaccines--;
+                                person.setVaccinated(true);
+                                vaccinatedFlag = true;
+                                System.out.println("Rule (The rest of population): " + person.getName() + " was vaccinated (" + var2 + ")");
+                            }
                         }
                     }
                 }
@@ -178,14 +143,14 @@ public class SpaghettiMainApplication {
 
     private boolean notHasMayors(List<PersonResponse> persons) {
         for (PersonResponse p : persons) {
-            if (!p.isVaccinated() && p.getJob().equals("Mayor")) return false;
+            if (!p.isVaccinated() && p.getJob().equals("MAYOR")) return false;
         }
         return true;
     }
 
     private boolean hasHealthPersonnel(List<PersonResponse> persons) {
         for (PersonResponse p : persons) {
-            if (!p.isVaccinated() && p.getJob().equals("HealthPersonnel")) return true;
+            if (!p.isVaccinated() && p.getJob().equals("HEALTH_PERSONNEL")) return true;
         }
         return false;
     }
@@ -253,7 +218,7 @@ public class SpaghettiMainApplication {
         }
     }
 
-    private class VaccineResponse {
+    private static class VaccineResponse {
 
         private String id;
         private String type;

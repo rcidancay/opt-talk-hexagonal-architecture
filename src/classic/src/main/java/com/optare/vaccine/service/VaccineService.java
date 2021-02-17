@@ -18,8 +18,8 @@ import java.util.List;
 @Service
 public class VaccineService {
 
-    public static final String HEALTH_PERSONNEL = "HealthPersonnel";
-    public static final String MAYOR = "Mayor";
+    public static final String HEALTH_PERSONNEL = "HEALTH_PERSONNEL";
+    public static final String MAYOR = "MAYOR";
     public static final int RETIRED_AGE = 65;
     public static final String HTTP_SERVER = "http://localhost:1080";
 
@@ -53,7 +53,7 @@ public class VaccineService {
         int totalVaccines = listOfVaccines.size();
 
         List<String> personsVaccinated = new ArrayList<>();
-        while (totalVaccines > 0 || personsVaccinated.size() < persons.size()) {
+        while (totalVaccines > 0 && personsVaccinated.size() < persons.size()) {
             for (Object vaccineResponse : listOfVaccines) {
                 String id = JsonPath.read(vaccineResponse, "$.id");
                 String type = JsonPath.read(vaccineResponse, "$.type");
@@ -71,16 +71,13 @@ public class VaccineService {
             boolean isNotVaccinated = !personsVaccinated.contains(person.getId());
             if (isNotVaccinated) {
                 if (isRetired(person)) {
-                    totalVaccines = vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (age > 65): ");
-                }
-                if (notHasRetiredPersons(persons) && person.getJob().equals(MAYOR)) {
-                    totalVaccines = vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (Mayor): ");
-                }
-                if (notHasRetiredPersons(persons) && notHasMayors(persons) && person.getJob().equals(HEALTH_PERSONNEL)) {
-                    totalVaccines = vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (Health Personnel): ");
-                }
-                if (notHasRetiredPersons(persons) && !hasHealthPersonnel(persons) && notHasMayors(persons)) {
-                    totalVaccines = vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (The rest of population): ");
+                    return vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (age > 65): ");
+                } else if (notHasRetiredPersons(persons) && person.getJob().equals(MAYOR)) {
+                    return vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (Mayor): ");
+                } else if (notHasRetiredPersons(persons) && notHasMayors(persons) && person.getJob().equals(HEALTH_PERSONNEL)) {
+                    return vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (Health Personnel): ");
+                } else if (notHasRetiredPersons(persons) && !hasHealthPersonnel(persons) && notHasMayors(persons)) {
+                    return vaccinatePerson(totalVaccines, personsVaccinated, id, type, person, "Rule (The rest of population): ");
                 }
             }
         }

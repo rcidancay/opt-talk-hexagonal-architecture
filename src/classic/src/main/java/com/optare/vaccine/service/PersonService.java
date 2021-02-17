@@ -34,28 +34,4 @@ public class PersonService {
         return result;
     }
 
-    public List<PersonResponse> findAllPersonsVaccinated(String vaccineType) {
-
-        List<PersonResponse> persons = this.findAllPersons();
-
-        List<PersonResponse> personsVaccinated = new ArrayList<>();
-        String urlVaccines = HTTP_SERVER + "/vaccines?vaccineType=" + vaccineType;
-        ResponseEntity<String> responseVaccines = restTemplate.getForEntity(urlVaccines, String.class);
-        JSONArray listOfVaccines = JsonPath.read(responseVaccines.getBody(), "$");
-        for (Object vaccineResponse : listOfVaccines) {
-            String type = JsonPath.read(vaccineResponse, "$.type");
-            String personId = JsonPath.read(vaccineResponse, "$.personId");
-
-            if (vaccineType.equals(type)) {
-                for (PersonResponse person : persons) {
-                    if (personId.equals(person.getId())) {
-                        personsVaccinated.add(person);
-                    }
-                }
-            }
-        }
-
-        return personsVaccinated;
-
-    }
 }

@@ -44,7 +44,7 @@ public class VaccineController {
         try {
             VaccineType vaccineType = VaccineType.of(vaccineRequest.getVaccineType());
             vaccineApplierUseCase.apply(vaccineType);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("Vaccine applied: " + vaccineType.getValue(), HttpStatus.ACCEPTED);
         } catch (VaccineTypeNotAllowed vaccineTypeNotAllowed) {
             log.error(vaccineTypeNotAllowed.getMessage(), vaccineTypeNotAllowed);
             return new ResponseEntity<>(vaccineTypeNotAllowed.getMessage(), HttpStatus.CONFLICT);

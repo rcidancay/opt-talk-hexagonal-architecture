@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class VaccineType {
 
-    private static final VaccineType COVID_19 = new VaccineType("covid-19");
-    private static final VaccineType YELLOW_FEVER = new VaccineType("yellow-fever");
+    public static final VaccineType COVID_19 = new VaccineType("covid-19");
+    public static final VaccineType YELLOW_FEVER = new VaccineType("yellow-fever");
     private final String value;
 
     private VaccineType(String vaccineType) {
